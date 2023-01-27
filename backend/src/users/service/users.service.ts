@@ -8,18 +8,18 @@ import { Model } from 'mongoose';
 @Injectable()
 export class UsersService {
     constructor(@InjectModel(User.name) private UsersModule: Model<UserDocument>) {}
-
+    
     async CreateUser(CreateUserDto: CreateUserDto): Promise<User> {
-        const CreateUser = await new this.UsersModule(CreateUserDto);
+        const CreateUser = new this.UsersModule(CreateUserDto);
         return CreateUser.save();
     }
 
-    async GetAllUser(): Promise<User[]> {
+    async GetAllUser(){
 
-        const UserData = await this.UsersModule.find().exec();
-        if(!UserData || UserData.length == 0) {
-            throw new NotFoundException('Users data not found!');
-        }
-        return UserData;
+        // const UserData = await this.UsersModule.find().exec();
+        // if (!UserData || UserData.length == 0) {
+            //     throw new NotFoundException('Users data not found!');
+            // }
+            // return UserData;
     }
 }
