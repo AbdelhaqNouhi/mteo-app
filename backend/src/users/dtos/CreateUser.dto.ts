@@ -10,6 +10,6 @@ export class CreateUserDto {
     email: string;
 
     @IsNotEmpty()
-    // @IsNumber()
+    @IsNumber()
     age: number;
 }

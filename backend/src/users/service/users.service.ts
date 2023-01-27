@@ -1,23 +1,25 @@
+import { UsersModule } from './../users.module';
 import { CreateUserDto } from './../dtos/CreateUser.dto';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { User, UserDocument } from '../Schema/users.schema';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class UsersService {
-    private takeUsers = [
-        { username: 'Anouhi', email: 'anouhi@gmamil.com' },
-        { username: 'gaba', email: 'gaba@gmamil.com' },
-    ]
+    constructor(@InjectModel(User.name) private UsersModule: Model<UserDocument>) {}
 
-    fetchUsers () {
-        return this.takeUsers;
+    async CreateUser(CreateUserDto: CreateUserDto): Promise<User> {
+        const CreateUser = await new this.UsersModule(CreateUserDto);
+        return CreateUser.save();
     }
 
-    createUser(userDetails: CreateUserDto) {
-        this.takeUsers.push(userDetails);
-        return;
-    }
+    async GetAllUser(): Promise<User[]> {
 
-    fetchUserById (id: number) {
-        return ({ id, username: 'gaba', email: 'gaba@gmamil.com' });
+        const UserData = await this.UsersModule.find().exec();
+        if(!UserData || UserData.length == 0) {
+            throw new NotFoundException('Users data not found!');
+        }
+        return UserData;
     }
 }
