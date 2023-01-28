@@ -9,29 +9,29 @@ import { ValidateUserPipe } from '../pipes/validate-user/validate-user.pipe';
 export class UsersController {
     constructor(private userService: UsersService) {}
 
-    @Post('create')
-    @UsePipes(new ValidationPipe())
-    @UseGuards(AuthGuard)
-    async CreateUser(@Body(ValidateUserPipe) @Res() response, userData: CreateUserDto) {
+    // @Post('create')
+    // @UsePipes(new ValidationPipe())
+    // @UseGuards(AuthGuard)
+    // async CreateUser(@Body() @Res() response, userData: CreateUserDto) {
 
-        try {
-            const NewUser = await this.userService.CreateUser(userData);
-            return response.status(HttpStatus.CREATED).json({message: 'User has been created successfully..',
-            NewUser
-        })
-        } catch (error) {
-            return response.status(HttpStatus.BAD_REQUEST).json ({
-                statusCode: 401,
-                message: 'Error: User not created!',
-                error: 'Bad Request'
-            });
-        }
-    }
+    //     try {
+    //         const NewUser = await this.userService.CreateUser(userData);
+    //         return response.status(HttpStatus.CREATED).json({message: 'User has been created successfully..',
+    //         NewUser
+    //     })
+    //     } catch (error) {
+    //         return response.status(HttpStatus.BAD_REQUEST).json ({
+    //             statusCode: 401,
+    //             message: 'Error: User not created!',
+    //             error: 'Bad Request'
+    //         });
+    //     }
+    // }
 
-    @Get()
-    GetAllUsers() {
-        return this.userService.GetAllUser();
-    }
+    // @Get()
+    // GetAllUsers() {
+    //     return this.userService.GetAllUser();
+    // }
 
     // @Get(':id')
     // async getUserById(
