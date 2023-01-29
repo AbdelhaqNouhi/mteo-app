@@ -11,13 +11,13 @@ import { hashPassword } from '../utiles/bcrypt';
 export class UsersService {
     constructor(@InjectModel(User.name) private UserModule: Model<UserDocument>) {}
 
-    async CreateUser(userData: CreateUserDto): Promise<User> {
+    async CreateUser(userData: CreateUserDto) {
         const hashedPassword = hashPassword(userData.password);
         const newUser = new this.UserModule({ ...userData, password: hashedPassword });
         return await newUser.save();
     }
 
-    async GetAllUser(): Promise<User[]> {
+    async GetAllUser() {
         const UserData = await this.UserModule.find().exec();
         if(!UserData || UserData.length == 0) {
             throw new NotFoundException('Users data not found!');
