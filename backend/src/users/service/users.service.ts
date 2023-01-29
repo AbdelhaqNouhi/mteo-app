@@ -2,24 +2,26 @@ import { UsersModule } from './../users.module';
 import { CreateUserDto } from '../dtos/CreateUser.dto';
 import { User, UserDocument } from '../Schema/users.schema';
 import { Model } from 'mongoose';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import * as bcrypt from 'bcrypt';
+import { hashPassword } from '../utiles/bcrypt';
 
 @Injectable()
 export class UsersService {
     constructor(@InjectModel(User.name) private UserModule: Model<UserDocument>) {}
 
-    // async CreateUser(CreateUserDto: CreateUserDto): Promise<User> {
-    //     const CreateUser = await new this.UsersModule(CreateUserDto);
-    //     return CreateUser.save();
-    // }
+    async CreateUser(userData: CreateUserDto): Promise<User> {
+        const hashedPassword = hashPassword(userData.password);
+        const newUser = new this.UserModule({ ...userData, password: hashedPassword });
+        return await newUser.save();
+    }
 
-    // async GetAllUser(): Promise<User[]> {
-
-    //     const UserData = await this.UsersModule.find().exec();
-    //     if(!UserData || UserData.length == 0) {
-    //         throw new NotFoundException('Users data not found!');
-    //     }
-    //     return UserData;
-    // }
+    async GetAllUser(): Promise<User[]> {
+        const UserData = await this.UserModule.find().exec();
+        if(!UserData || UserData.length == 0) {
+            throw new NotFoundException('Users data not found!');
+        }
+        return UserData;
+    }
 }
