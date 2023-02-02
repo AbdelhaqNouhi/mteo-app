@@ -8,24 +8,21 @@ import { ValidateUserPipe } from '../pipes/validate-user/validate-user.pipe';
 @Controller('users')
 export class UsersController {
     constructor(private userService: UsersService) {}
-
-    @Post()
     @UsePipes(new ValidationPipe())
     @UseGuards(AuthGuard)
-    CreateUser(@Body()  userData: CreateUserDto) {
-        return this.userService.CreateUser(userData);
-    }
 
     @Get()
     GetAllUsers() {
         return this.userService.GetAllUser();
     }
 
-    // @Get(':id')
-    // async getUserById(
-    //     @Param('id', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.BAD_REQUEST }))
-    //     id: number,
-    // ) {
-    //     return this.userService.fetchUserById(id)
+    @Post()
+    CreateUser(@Body()  userData: CreateUserDto) {
+        return this.userService.CreateUser(userData);
+    }
+
+    // @Post('login')
+    // LoginUser(@Body() userData: CreateUserDto) {
+    //     return this.userService.LoginUser(userData);
     // }
 } 
